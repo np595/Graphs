@@ -32,21 +32,20 @@ class Main{
         return randomGraph;
     }
     static Graph createLinkedList(int n){
+        // take a value n and create a linked list of n nodes
         Graph linkedList = new Graph();
-        Node prev;
         for(int i = 0; i < n ; i++){
-            if(linkedList.graph.isEmpty()){
+            if(linkedList.vertices.isEmpty()){
                 linkedList.addNode(Integer.toString(i));
             }else{
                 linkedList.addNode(Integer.toString(i));
-                Node curVertex = new Node(Integer.toString(i));
-                prev = linkedList.graph.get(Integer.toString(i-1));
-                prev.adjacentNodes.add(curVertex);
+                linkedList.vertices.get(i-1).adjacentNodes.add(linkedList.vertices.get(i));
             }
         }
 
         return linkedList;
     }
+
     ArrayList<Node> BFTRecLinkedList(final Graph graph){
         return null;
     }
