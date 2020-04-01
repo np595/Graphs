@@ -45,9 +45,33 @@ class Main{
 
         return linkedList;
     }
-
+    //(h)
     ArrayList<Node> BFTRecLinkedList(final Graph graph){
-        return null;
+        ArrayList<Node> BFT = new ArrayList<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
+
+        for (Node node : graph.getAllNodes()) {
+            BFTRecLinkedListHelper(BFT, visited, node);
+        }
+        
+        return BFT;
+    }
+    private void BFTRecLinkedListHelper(ArrayList<Node> BFT, HashSet<Node> visited , Node cur){
+        visited.add(cur);
+        BFT.add(cur);
+        Iterator<Node> adjNodes = cur.adjacentNodes.listIterator();
+        while(adjNodes.hasNext()){
+            Node next = adjNodes.next();
+            if(!visited.contains(cur)){
+                BFTRecLinkedListHelper(BFT, visited, next);
+            }
+        }
+    }
+    //(i)
+    ArrayList<Node> BFTIterLinkedList(final Graph graph){
+        ArrayList<Node> BFT = new ArrayList<Node>();
+
+        return BFT;
     }
     public static void main(String[] args){
         
