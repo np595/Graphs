@@ -69,7 +69,8 @@ class Main{
     }
     //(i)
     ArrayList<Node> BFTIterLinkedList(final Graph graph){
-        ArrayList<Node> BFT = new ArrayList<Node>();
+        //TODO: finish this
+        ArrayList<Node> BFT = GraphSearch.BFTIter(graph);
 
         return BFT;
     }

@@ -61,8 +61,7 @@
     ArrayList<Node> BFTRec(final Graph graph){
         ArrayList<Node> BFT = new ArrayList<Node>();
         HashSet<Node> visited = new HashSet<Node>();
-       //Map.Entry<String,Node> entry = graph.graph.entrySet().iterator().next();
-        //Node first = entry.getValue();
+
         for (Node node : graph.getAllNodes()) {
             BFTRecHelper(BFT, visited, node);
         }
@@ -82,7 +81,7 @@
     }
 
     //(g)
-    ArrayList<Node> BFTIter(final Graph graph){
+    static ArrayList<Node> BFTIter(final Graph graph){
         //iteratively returns an ArrayList of all of the Nodes in the Graph in a valid Breadth-First Traversal
         ArrayList<Node> BFT = new ArrayList<Node>();
         LinkedList<Node> queue = new LinkedList<Node>();
