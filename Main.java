@@ -26,7 +26,7 @@ class Main{
 
         for (Node node : nodes) {
             randomNum = randNumGen.nextInt(n)+1;
-            randomGraph.addUndirectedEdge(node, nodesToSelectFrom[randomNum]);
+            randomGraph.addUndirectedEdge(node, nodesToSelectFrom[randomNum-1]);
         }
 
         return randomGraph;
@@ -46,17 +46,17 @@ class Main{
         return linkedList;
     }
     //(h)
-    ArrayList<Node> BFTRecLinkedList(final Graph graph){
+    static ArrayList<Node> BFTRecLinkedList(final Graph graph){
         ArrayList<Node> BFT = new ArrayList<Node>();
         HashSet<Node> visited = new HashSet<Node>();
 
-        for (Node node : graph.getAllNodes()) {
+        for (Node node : graph.vertices) {
             BFTRecLinkedListHelper(BFT, visited, node);
         }
         
         return BFT;
     }
-    private void BFTRecLinkedListHelper(ArrayList<Node> BFT, HashSet<Node> visited , Node cur){
+    private static void BFTRecLinkedListHelper(ArrayList<Node> BFT, HashSet<Node> visited , Node cur){
         visited.add(cur);
         BFT.add(cur);
         Iterator<Node> adjNodes = cur.adjacentNodes.listIterator();
@@ -68,10 +68,8 @@ class Main{
         }
     }
     //(i)
-    ArrayList<Node> BFTIterLinkedList(final Graph graph){
-        //TODO: finish this
+    static ArrayList<Node> BFTIterLinkedList(final Graph graph){
         ArrayList<Node> BFT = GraphSearch.BFTIter(graph);
-
         return BFT;
     }
     public static void main(String[] args){
@@ -91,5 +89,22 @@ class Main{
         */
         Graph testGraph = createRandomUnweightedGraphIter(10);
         Graph linkedList = createLinkedList(10);
+        
+        ArrayList<Node> bftLL = BFTIterLinkedList(linkedList);
+        ArrayList<Node> bftGraph = GraphSearch.BFTIter(testGraph);
+        ArrayList<Node> bftLinkedListRec = BFTRecLinkedList(linkedList);
+        System.out.println("Printing BFT on random Graph");
+        for (Node node : bftGraph) {
+            System.out.println(node.nodeVal);
+        }
+        System.out.println("Printing BFT on Linked List");
+        for (Node node : bftLL) {
+            System.out.println(node.nodeVal);
+        }
+        System.out.println("Printing BFT Recursive Linked List");
+        for (Node node : bftLinkedListRec) {
+            System.out.println(node.nodeVal);
+        }
+
     }
 }
