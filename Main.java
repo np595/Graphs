@@ -1,5 +1,38 @@
 import java.util.*;
 class Main{
+    //4c
+    static DirectedGraph createRandomDAGIter(final int n){
+        //Creates n random nodes with randomly assigned unweighted, directed edges
+        DirectedGraph randomDAG = new DirectedGraph();
+        Random randNumGen = new Random();
+        Set<Integer> randomNumberHash = new HashSet<Integer>();
+        int randomNum;
+        int i = n;
+        //Create random nodes and insert to graph
+        while(i != 0){
+            //create random node
+            randomNum = randNumGen.nextInt(n)+1;
+            while(randomNumberHash.contains(randomNum)){
+                randomNum = randNumGen.nextInt(n) + 1;
+            }
+            randomNumberHash.add(randomNum);
+            randomDAG.addNode(Integer.toString(randomNum));
+            i--;
+        }
+        
+        //Get random edges for each node and update nodes, edges will be unweighted and bidirectional
+        Set<Node> nodes = randomDAG.getAllNodes();
+        Node[] nodesToSelectFrom = new Node[nodes.size()];
+        nodes.toArray(nodesToSelectFrom);
+
+        for (Node node : nodes) {
+            randomNum = randNumGen.nextInt(n)+1;
+            randomDAG.addDirectedEdge(node, nodesToSelectFrom[randomNum-1]);
+        }
+
+        return randomDAG;
+    }
+    
     static Graph createRandomUnweightedGraphIter(int n){
         //creates n random nodes with randomly assigned unweighted, bidirectional edges
         Graph randomGraph = new Graph();
@@ -31,6 +64,78 @@ class Main{
 
         return randomGraph;
     }
+    //5c
+    static WeightedGraph createdRandomCompleteWeightedGraph(final int n){
+        WeightedGraph graph = new WeightedGraph();
+        Random randNumGen = new Random();
+        int randomNum;
+        for(int i = 0; i < n; i++){
+            graph.addNode(Integer.toString(i));
+        }
+        for (Node vertex : graph.vertices) {
+            for (Node node : graph.vertices) {
+                if(vertex == node){
+                    continue;
+                }else{
+                    randomNum = randNumGen.nextInt(100)+1;
+                    graph.addWeightedEdge(vertex, node, randomNum);
+                }
+            }
+        }
+
+        return graph;
+    }
+    //5d
+    static WeightedGraph createWeightedLinkedList(final int n){
+        WeightedGraph linkedList = new WeightedGraph();
+        for(int i = 0; i < n; i++){
+            if(linkedList.vertices.isEmpty()){
+                linkedList.addNode(Integer.toString(i));
+            }else{
+                linkedList.addWeightedEdge(new Node (Integer.toString(i-1)), new Node(Integer.toString(i)), 1);
+                linkedList.addNode(Integer.toString(i));
+            }
+        }
+        return linkedList;
+    }
+    //5e
+    static HashMap<Node,Integer> dijsktras(final Node start){
+        //Returns dictionary mapping each node in the graph to the minimum value from start to get to this node
+        //TODO:this...
+        HashMap<Node, Integer> distance = new HashMap<>();
+        PriorityQueue<Node> pQueue = new PriorityQueue<Node>();
+        HashSet<Node> visited = new HashSet<>();
+        HashMap<Node, Node> parent = new HashMap<>();
+
+        distance.put(start, 0);
+        for (Node neighbor : start.adjacentNodes) {
+            distance.put(neighbor, neighbor.weight);
+            pQueue.add(neighbor);
+            parent.put(neighbor, start);
+        }
+        visited.add(start);
+        Node cur;
+        while(!pQueue.isEmpty()){
+            cur = pQueue.poll();
+            if(visited.contains(cur)){
+                continue;
+            }else{
+                visited.add(cur);
+                if(!distance.containsKey(cur)){
+                    distance.put(cur, cur.weight + parent.get(cur).weight);
+                }else{
+                    //check for shorter path?
+
+                }
+                for (Node adj : cur.adjacentNodes) {
+                    pQueue.add(adj);
+                    parent.put(adj, cur);
+                }
+            }
+        }
+        return distance;
+    } 
+
     static Graph createLinkedList(int n){
         // take a value n and create a linked list of n nodes
         Graph linkedList = new Graph();

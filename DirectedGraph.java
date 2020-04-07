@@ -2,7 +2,7 @@ import java.util.*;
 public class DirectedGraph {
     List<Node> vertices;
 
-    DirectedGraph(int n){
+    DirectedGraph(){
         this.vertices = new ArrayList<Node>();
     }
 
