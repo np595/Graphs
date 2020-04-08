@@ -101,37 +101,57 @@ class Main{
     //5e
     static HashMap<Node,Integer> dijsktras(final Node start){
         //Returns dictionary mapping each node in the graph to the minimum value from start to get to this node
-        //TODO:this...
+        //TODO:test this
         HashMap<Node, Integer> distance = new HashMap<>();
-        PriorityQueue<Node> pQueue = new PriorityQueue<Node>();
-        HashSet<Node> visited = new HashSet<>();
-        HashMap<Node, Node> parent = new HashMap<>();
-
-        distance.put(start, 0);
-        for (Node neighbor : start.adjacentNodes) {
-            distance.put(neighbor, neighbor.weight);
-            pQueue.add(neighbor);
-            parent.put(neighbor, start);
-        }
-        visited.add(start);
-        Node cur;
-        while(!pQueue.isEmpty()){
-            cur = pQueue.poll();
-            if(visited.contains(cur)){
-                continue;
-            }else{
-                visited.add(cur);
-                if(!distance.containsKey(cur)){
-                    distance.put(cur, cur.weight + parent.get(cur).weight);
-                }else{
-                    //check for shorter path?
-
+        
+        Comparator<Edge> edgeWeightComparator = new Comparator<Edge>(){
+        
+            @Override
+            public int compare(Edge o1, Edge o2) {
+                if(o1.weight < o2.weight){
+                    return o1.weight;
                 }
-                for (Node adj : cur.adjacentNodes) {
-                    pQueue.add(adj);
-                    parent.put(adj, cur);
-                }
+                return o2.weight;
             }
+        };
+
+        PriorityQueue<Edge> pQueue = new PriorityQueue<Edge>(edgeWeightComparator);
+        HashSet<Node> visited = new HashSet<>();
+        
+        distance.put(start, 0);
+        Node cur = start;
+        Node min = null;
+        
+        for (Node neighbor : start.edges.keySet()) {
+            distance.put(neighbor, Integer.MAX_VALUE);
+        }
+
+        while(cur != null && distance.get(cur) != Integer.MAX_VALUE){
+            visited.add(cur);
+            for (Node neighbor : cur.edges.keySet()) {
+                distance.putIfAbsent(neighbor, Integer.MAX_VALUE); 
+                if(!visited.contains(neighbor)){
+                    distance.put(neighbor, Math.min( distance.get(neighbor), cur.edges.get(neighbor) + distance.get(cur))); 
+                    pQueue.add(new Edge( neighbor, cur.edges.get(neighbor)));
+                }
+
+            }
+            //get min node
+            for (Node node : distance.keySet()) {
+                if(!visited.contains(node)){
+                    if(min == null){
+                        min = node;
+                    }else{
+                        if(distance.get(node) < distance.get(min)){
+                            min = node;
+                        }
+                    }
+                }else{
+                    min = null;
+                }
+              
+            }
+            cur = min;
         }
         return distance;
     } 
@@ -211,5 +231,31 @@ class Main{
             System.out.println(node.nodeVal);
         }
 
+        WeightedGraph dijk = new WeightedGraph();
+        dijk.addNode("a");
+        dijk.addNode("b");
+        dijk.addNode("c");
+        dijk.addNode("d");
+        dijk.addNode("e");
+        dijk.addNode("f");
+        dijk.addNode("g");
+
+        dijk.addWeightedEdge(dijk.vertices.get(0), dijk.vertices.get(1), 2);
+        dijk.addWeightedEdge(dijk.vertices.get(0), dijk.vertices.get(3), 4);
+        dijk.addWeightedEdge(dijk.vertices.get(0), dijk.vertices.get(3), 7);
+        dijk.addWeightedEdge(dijk.vertices.get(0), dijk.vertices.get(5), 5);
+        dijk.addWeightedEdge(dijk.vertices.get(1), dijk.vertices.get(4), 3);
+        dijk.addWeightedEdge(dijk.vertices.get(1), dijk.vertices.get(1), 3);
+        dijk.addWeightedEdge(dijk.vertices.get(1), dijk.vertices.get(6), 8);
+        dijk.addWeightedEdge(dijk.vertices.get(2), dijk.vertices.get(5), 6);
+        dijk.addWeightedEdge(dijk.vertices.get(3), dijk.vertices.get(6), 6);
+        dijk.addWeightedEdge(dijk.vertices.get(4), dijk.vertices.get(6), 7);
+        dijk.addWeightedEdge(dijk.vertices.get(5), dijk.vertices.get(6), 6);
+
+        HashMap<Node, Integer> dist = dijsktras(dijk.vertices.get(0));
+        System.out.println("Performing dijsktras");
+        for (Node node : dist.keySet()) {
+            System.out.println("Node "+node.nodeVal+" : " + dist.get(node));
+        }
     }
 }

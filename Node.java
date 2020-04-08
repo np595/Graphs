@@ -3,15 +3,14 @@ import java.util.*;
 class Node{
 
     String nodeVal;
-    int weight;
     ArrayList<Node> adjacentNodes = new ArrayList<Node>();
+    HashMap<Node,Integer> edges = new HashMap<Node, Integer>();
     
     public Node(final String nodeVal){
         this.nodeVal = nodeVal;
     }
-
-    public Node(final String nodeVal, int weight){
-        this.nodeVal = nodeVal;
-        this.weight = weight;
+    
+    void addEdge(Node destination, int weight){
+        this.edges.put(destination,weight);
     }
 }

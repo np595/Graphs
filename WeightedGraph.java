@@ -11,7 +11,8 @@ public class WeightedGraph {
     }
 
     void addWeightedEdge(final Node first, final Node second, final int edgeWeight){
-        vertices.get(vertices.indexOf(first)).adjacentNodes.add(new Node(second.nodeVal, edgeWeight));
+        //vertices.get(vertices.indexOf(first)).adjacentNodes.add(new Node(second.nodeVal, edgeWeight));
+        first.addEdge(second, edgeWeight);
     }
 
     void removeDirectedEdge(final Node first, final Node second){
@@ -25,7 +26,6 @@ public class WeightedGraph {
     }
 
     HashSet<Node> getAllNodes(){
-        HashSet<Node> vertices = new HashSet<Node>(this.vertices);
-        return vertices;
+        return new HashSet<Node>(this.vertices);
     }
 }
