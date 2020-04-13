@@ -1,14 +1,15 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 public class TopSort {
-
+//Just a bit of nitpicking, but you could categorize each part by the problem they come from, like problem 4b.
+//Otherwise, a lot of the code is organized and laid out neatly. I would like to know if anything if the code is still a wip for part 4-7 like it says if anything
     ArrayList<Node> Kahns(final DirectedGraph graph){
         //Performs topological sort using Kahn's algorithm 
         ArrayList<Node> output = new ArrayList<Node>();
         HashMap<Node,AtomicLong> dependencies = new HashMap<Node, AtomicLong>();
         LinkedList<Node> queue = new LinkedList<Node>();
         HashSet<Node> setOfAllNodes = graph.getAllNodes();
-
+      
         for (Node node : setOfAllNodes) {
             //update dependencies hash map to proper in degree.
             for (Node adjNode : node.adjacentNodes) {
